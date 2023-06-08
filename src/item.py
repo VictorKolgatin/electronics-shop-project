@@ -46,12 +46,12 @@ class Item:
         if len(name) <= 10:
             self.__name = name
         else:
-            print(f'Exception: Длина наименования товара превышает 10 символов')
+            raise ValueError("Exception: Длина наименования товара превышает 10 символов")
 
     @classmethod
     def instantiate_from_csv(cls):
         cls.all.clear()
-        with open('../src/items.csv') as csvfile:
+        with open('../src/items.csv', encoding='cp1251') as csvfile:
             item = csv.DictReader(csvfile)
             for row in item:
                 cls(row['name'], row['price'], row['quantity'])

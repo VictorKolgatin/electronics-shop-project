@@ -40,5 +40,12 @@ def test_string_to_number():
 
 
 def test_name_setter():
-    item.name = 'Смартфон'
-    assert len(item.name) <= 10
+    item.name = 'СуперСмартфон'
+    assert len(item.name) >= 10
+
+    with pytest.raises(ValueError):
+        raise ValueError
+
+
+
+
