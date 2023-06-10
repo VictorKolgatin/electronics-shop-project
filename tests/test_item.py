@@ -46,6 +46,16 @@ def test_name_setter():
     with pytest.raises(ValueError):
         raise ValueError
 
+def test_repr():
+    item1 = Item("Смартфон", 10000, 20)
+    item2 = Item("IPhone", 50000, 2)
+    assert repr(item1) == "Item('Смартфон', 10000, 20)"
+    assert repr(item2) == "Item('IPhone', 50000, 2)"
 
+def test_str():
+    item1 = Item("Смартфон", 10000, 20)
+    item2 = Item("IPhone", 50000, 2)
+    assert str(item1) == 'Смартфон'
+    assert str(item2) == 'IPhone'
 
 
