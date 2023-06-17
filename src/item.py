@@ -27,6 +27,11 @@ class Item:
     def __str__(self):
         return f"{self.__name}"
 
+    def __add__(self, other):
+        if not isinstance(other, Item):
+            raise TypeError('Объект должен быть экземпляром класса Item или Phone')
+        return self.quantity + other.quantity
+
 
     def calculate_total_price(self) -> float:
         """
