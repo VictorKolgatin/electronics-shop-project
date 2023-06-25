@@ -1,5 +1,12 @@
 import csv
 
+class InstantiateCSVError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден'
+
+    def __str__(self):
+        return f'{self.message}'
 
 class Item:
     """
@@ -24,6 +31,7 @@ class Item:
 
     def __repr__(self):
         return f"{__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
     def __str__(self):
         return f"{self.__name}"
 
@@ -31,7 +39,6 @@ class Item:
         if not isinstance(other, Item):
             raise TypeError('Объект должен быть экземпляром класса Item или Phone')
         return self.quantity + other.quantity
-
 
     def calculate_total_price(self) -> float:
         """
@@ -59,12 +66,26 @@ class Item:
             raise ValueError("Exception: Длина наименования товара превышает 10 символов")
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls, path = '../src/items.csv'):
         cls.all.clear()
-        with open('../src/items.csv', encoding='cp1251') as csvfile:
-            item = csv.DictReader(csvfile)
-            for row in item:
-                cls(row['name'], row['price'], row['quantity'])
+        try:
+            with open(path, encoding='cp1251') as csvfile:
+                item = csv.DictReader(csvfile)
+                for row in item:
+                    try:
+                        if len(row) != 3:
+                            raise InstantiateCSVError()
+                    except InstantiateCSVError as message:
+                            print(message)
+                            return message
+                            # break
+                    else:
+                            name = row['name']
+                            price = row['price']
+                            quantity = row['quantity']
+                            Item(name=name, price=price, quantity=quantity)
+        except FileNotFoundError:
+            print('FileNotFoundError: Отсутствует файл items.csv')
 
     @staticmethod
     def string_to_number(file):
